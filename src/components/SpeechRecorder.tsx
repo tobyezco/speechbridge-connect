@@ -19,10 +19,6 @@ const SpeechRecorder = () => {
       recognition.interimResults = true;
       recognition.lang = 'en-US';
 
-      // Improve accuracy with these settings
-      recognition.maxAlternatives = 1;
-      recognition.continuous = true;
-
       recognition.onresult = (event) => {
         let interimTranscript = '';
         let finalTranscript = '';

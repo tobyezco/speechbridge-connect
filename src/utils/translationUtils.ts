@@ -15,14 +15,21 @@ export const SUPPORTED_LANGUAGES = [
 
 export const translateText = async (text: string, targetLang: string) => {
   try {
-    const response = await axios.post('https://libretranslate.de/translate', {
-      q: text,
-      source: 'auto',
-      target: targetLang,
+    // Using a more reliable free translation API
+    const response = await axios.post('https://api.mymemory.translated.net/get', null, {
+      params: {
+        q: text,
+        langpair: `en|${targetLang}`,
+      },
     });
-    return response.data.translatedText;
+
+    if (response.data && response.data.responseData) {
+      return response.data.responseData.translatedText;
+    }
+    
+    throw new Error('Translation failed');
   } catch (error) {
     console.error('Translation error:', error);
-    return text;
+    throw error;
   }
 };
