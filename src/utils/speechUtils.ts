@@ -1,4 +1,16 @@
-export const defaultKeywords = ['fire', 'help', 'emergency', 'urgent'];
+export const defaultKeywords = [
+  'fire',
+  'help',
+  'emergency',
+  'urgent',
+  'danger',
+  'warning',
+  'stop',
+  'police',
+  'ambulance',
+  'medical',
+  'accident',
+];
 
 export const highlightKeywords = (text: string, keywords: string[] = defaultKeywords): string => {
   let highlightedText = text;

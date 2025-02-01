@@ -19,6 +19,10 @@ const SpeechRecorder = () => {
       recognition.interimResults = true;
       recognition.lang = 'en-US';
 
+      // Improve accuracy with these settings
+      recognition.maxAlternatives = 1;
+      recognition.continuous = true;
+
       recognition.onresult = (event) => {
         let interimTranscript = '';
         let finalTranscript = '';
@@ -28,7 +32,6 @@ const SpeechRecorder = () => {
           if (event.results[i].isFinal) {
             finalTranscript += transcript + ' ';
             
-            // Check for keywords in the final transcript
             if (checkForKeywords(transcript)) {
               toast({
                 title: "Alert!",
