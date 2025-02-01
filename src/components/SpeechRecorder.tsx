@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Mic, MicOff, Copy, Check } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import TranscriptDisplay from './TranscriptDisplay';
+import { checkForKeywords } from '@/utils/speechUtils';
 
 const SpeechRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
@@ -25,6 +27,15 @@ const SpeechRecorder = () => {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
             finalTranscript += transcript + ' ';
+            
+            // Check for keywords in the final transcript
+            if (checkForKeywords(transcript)) {
+              toast({
+                title: "Alert!",
+                description: "Urgent keyword detected in speech!",
+                variant: "destructive",
+              });
+            }
           } else {
             interimTranscript += transcript;
           }
@@ -129,17 +140,7 @@ const SpeechRecorder = () => {
             </button>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <div className="transcript-container">
-              {transcript ? (
-                <p className="text-lg leading-relaxed">{transcript}</p>
-              ) : (
-                <p className="text-gray-500 text-center italic">
-                  {isRecording ? "Listening..." : "Start recording to see transcription"}
-                </p>
-              )}
-            </div>
-          </div>
+          <TranscriptDisplay transcript={transcript} isRecording={isRecording} />
         </div>
       </div>
     </div>
